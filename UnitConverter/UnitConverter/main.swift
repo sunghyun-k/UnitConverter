@@ -8,13 +8,17 @@
 
 import Foundation
 
-func centimeterToMeter(_ input: Int) -> Double {
-    var result = Double()
-    result = Double(input) / 100
-    
+var input = "183cm"
+func ConvertDouble (input: String) -> Double {
+    let result = Double(input.trimmingCharacters(in: ["c","m"]))!
     return result
 }
+var myDouble = ConvertDouble(input: input)
 
-var input = 120
-var result = centimeterToMeter(120)
-print(result)
+func convertCmToM(input: Double) -> String {
+    
+    let result = myDouble / 100
+    return String(result) + "m"
+}
+
+print(convertCmToM(input: ConvertDouble(input: input)))
