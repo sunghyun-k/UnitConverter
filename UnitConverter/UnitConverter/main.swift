@@ -3,47 +3,49 @@ import Foundation
 // 숫자와 문자 나누기
 func divide(_ input: String) -> (number: Double, from: String, to: String)? {
     
-    var from = String()
-    var to = String()
+    var from = ""
+    var to = ""
     
     let inputUnit = input.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789."))
     
-    var index = inputUnit.endIndex
-    if let innerIndex = inputUnit.firstIndex(of: " ") {
-        index = innerIndex
-        to = String(inputUnit[innerIndex...])
-        to = to.replacingOccurrences(of: " ", with: "")
-    } else {
-        to = ""
+    let inputUnitSplited = inputUnit.split(separator: " ")
+    from = String(inputUnitSplited[0])
+    if inputUnitSplited.indices.contains(1) {
+        to = String(inputUnitSplited[1])
     }
-    from = String(inputUnit[..<index])
     
-    guard let number = Double(input.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789").inverted)) else {
+    guard let number = Double(input.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789.").inverted)) else {
         return nil
     }
     return (number, from, to)
 }
 
+
+// 변환에 곱하는 수
+let meterToInchMultiplier = 39.37
+let inchToCentimeterMuliplier = 2.54
+let yardToInchMultiplier: Double = 36
+
 // to inch 변환 함수들
 func meterToInch(_ input: Double) -> Double {
-    return input * 39.37
+    return input * meterToInchMultiplier
 }
 func centimeterToInch(_ input: Double) -> Double {
-    return input / 2.54
+    return input / inchToCentimeterMuliplier
 }
 func yardToInch(_ input: Double) -> Double {
-    return input * 36
+    return input * yardToInchMultiplier
 }
 
 // from inch 변환 함수들
 func inchToMeter(_ input: Double) -> Double {
-    return input / 39.37
+    return input / meterToInchMultiplier
 }
 func inchToCentimeter(_ input: Double) -> Double {
-    return input * 2.54
+    return input * inchToCentimeterMuliplier
 }
 func inchToYard(_ input: Double) -> Double {
-    return input / 36
+    return input / yardToInchMultiplier
 }
 
 // 변환하기
@@ -85,7 +87,6 @@ func convertUnit(_ input: String) -> String {
 
 // 유저 컨트롤
 func userController() {
-    
     while true {
         let input = readLine()!
         if input == "q" {
@@ -93,7 +94,6 @@ func userController() {
         }
         print(convertUnit(input))
     }
-    
 }
 
 
