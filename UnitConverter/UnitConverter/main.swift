@@ -8,12 +8,15 @@ func divide(_ input: String) -> (number: Double, from: String, to: String)? {
     
     let inputUnit = input.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789."))
     
-    guard let index = inputUnit.firstIndex(of: " ") else {
-        return nil
+    var index = inputUnit.endIndex
+    if let innerIndex = inputUnit.firstIndex(of: " ") {
+        index = innerIndex
+        to = String(inputUnit[innerIndex...])
+        to = to.replacingOccurrences(of: " ", with: "")
+    } else {
+        to = ""
     }
     from = String(inputUnit[..<index])
-    to = String(inputUnit[index...])
-    to = to.replacingOccurrences(of: " ", with: "")
     
     guard let number = Double(input.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789").inverted)) else {
         return nil
@@ -21,18 +24,26 @@ func divide(_ input: String) -> (number: Double, from: String, to: String)? {
     return (number, from, to)
 }
 
-// 변환 함수들
+// to inch 변환 함수들
 func meterToInch(_ input: Double) -> Double {
     return input * 39.37
 }
 func centimeterToInch(_ input: Double) -> Double {
     return input / 2.54
 }
+func yardToInch(_ input: Double) -> Double {
+    return input * 36
+}
+
+// from inch 변환 함수들
 func inchToMeter(_ input: Double) -> Double {
     return input / 39.37
 }
-func inchTocentimeter(_ input: Double) -> Double {
+func inchToCentimeter(_ input: Double) -> Double {
     return input * 2.54
+}
+func inchToYard(_ input: Double) -> Double {
+    return input / 36
 }
 
 // 변환하기
@@ -47,28 +58,43 @@ func convertUnit(_ input: String) -> String {
         result = meterToInch(dividedNumber.number)
     case "cm":
         result = centimeterToInch(dividedNumber.number)
+    case "yard":
+        result = yardToInch(dividedNumber.number)
     case "inch":
-        break
+        result = dividedNumber.number
     default:
         return "지원하지 않는 범위입니다."
     }
     
     switch dividedNumber.to {
     case "m":
-        result = inchToMeter(dividedNumber.number)
+        result = inchToMeter(result)
         return String(result) + "m"
     case "cm":
-        result = inchTocentimeter(dividedNumber.number)
+        result = inchToCentimeter(result)
         return String(result) + "cm"
-    case "inch":
+    case "yard":
+        result = inchToYard(result)
+        return String(result) + "yard"
+    case "inch", "":
         return String(result) + "inch"
     default:
         return "지원하지 않는 범위입니다."
     }
 }
 
+// 유저 컨트롤
+func userController() {
+    
+    while true {
+        let input = readLine()!
+        if input == "q" {
+            break
+        }
+        print(convertUnit(input))
+    }
+    
+}
 
 
-var input = readLine()!
-
-print(convertUnit(input))
+userController()
