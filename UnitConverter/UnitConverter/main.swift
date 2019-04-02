@@ -8,5 +8,13 @@
 
 import Foundation
 
-print("Hello, World!")
+func centimeterToMeter(_ input: Int) -> Double {
+    var result = Double()
+    result = Double(input) / 100
+    
+    return result
+}
 
+var input = 120
+var result = centimeterToMeter(120)
+print(result)
