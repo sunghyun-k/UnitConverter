@@ -8,7 +8,7 @@
 
 import Foundation
 
-var input = "183cm"
+var input = readLine()!
 func ConvertDouble (input: String) -> Double {
     let result = Double(input.trimmingCharacters(in: ["c","m"]))!
     return result
