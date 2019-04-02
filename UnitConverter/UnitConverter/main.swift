@@ -1,24 +1,33 @@
-//
-//  main.swift
-//  UnitConverter
-//
-//  Created by 김성현 on 02/04/2019.
-//  Copyright © 2019 김성현. All rights reserved.
-//
-
 import Foundation
 
-var input = readLine()!
-func ConvertDouble (input: String) -> Double {
-    let result = Double(input.trimmingCharacters(in: ["c","m"]))!
-    return result
+func convertUnit(_ input: String) -> String {
+    return ""
 }
-var myDouble = ConvertDouble(input: input)
 
-func convertCmToM(input: Double) -> String {
+// 숫자 나누기
+func divide(input: String) -> (Double, String, String)? {
     
-    let result = myDouble / 100
-    return String(result) + "m"
+    var from = String()
+    var to = String()
+    
+    let inputUnit = input.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789"))
+    
+    guard let index = inputUnit.firstIndex(of: " ") else {
+        return nil
+    }
+    from = String(inputUnit[..<index])
+    to = String(inputUnit[index...])
+    to = to.replacingOccurrences(of: " ", with: "")
+    
+    guard let number = Double(input.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789").inverted)) else {
+        return nil
+    }
+    return (number, from, to)
 }
 
-print(convertCmToM(input: ConvertDouble(input: input)))
+
+print(divide(input: "120cm inch"))
+
+
+
+//var input = readLine()!
