@@ -139,6 +139,7 @@ func fromGram(_ input: Double, to outputUnit: String) -> String {
     default:
         return "지원하지 않는 범위입니다."
     }
+        resultNumber = (resultNumber * 1000).rounded() / 1000
     return String(resultNumber) + unit
 }
 
@@ -162,6 +163,7 @@ func fromLiter(_ input: Double, to outputUnit: String) -> String {
     default:
         return "지원하지 않는 범위입니다."
     }
+        resultNumber = (resultNumber * 1000).rounded() / 1000
     return String(resultNumber) + unit
 }
 
@@ -197,6 +199,5 @@ func userController() {
         print(convertUnit(input))
     }
 }
-
 
 userController()
