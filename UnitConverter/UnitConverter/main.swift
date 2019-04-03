@@ -95,7 +95,7 @@ func toLiter(_ input: Double, from inputUnit: String) -> Double? {
 }
 
 // from inch 변환 함수
-func fromInch(_ input: Double, to outputUnit: String) -> String {
+func fromInch(_ input: Double, to outputUnit: String) -> (output: Double, unit: String)? {
     var resultNumber = Double()
     var unit = String()
     switch outputUnit {
@@ -112,15 +112,13 @@ func fromInch(_ input: Double, to outputUnit: String) -> String {
         resultNumber = input
         unit = "inch"
     default:
-        return "지원하지 않는 범위입니다."
+        return nil
     }
-    // 소수점 넷째자리에서 반올림하기
-    resultNumber = (resultNumber * 1000).rounded() / 1000
-    return String(resultNumber) + unit
+    return (resultNumber, unit)
 }
 
 // from gram 변환 함수
-func fromGram(_ input: Double, to outputUnit: String) -> String {
+func fromGram(_ input: Double, to outputUnit: String) -> (output: Double, unit: String)? {
     var resultNumber = Double()
     var unit = String()
     switch outputUnit {
@@ -137,14 +135,13 @@ func fromGram(_ input: Double, to outputUnit: String) -> String {
         resultNumber = input
         unit = "g"
     default:
-        return "지원하지 않는 범위입니다."
+        return nil
     }
-        resultNumber = (resultNumber * 1000).rounded() / 1000
-    return String(resultNumber) + unit
+    return (resultNumber, unit)
 }
 
 // from liter 변환 함수
-func fromLiter(_ input: Double, to outputUnit: String) -> String {
+func fromLiter(_ input: Double, to outputUnit: String) -> (output: Double, unit: String)? {
     var resultNumber = Double()
     var unit = String()
     switch outputUnit {
@@ -161,32 +158,40 @@ func fromLiter(_ input: Double, to outputUnit: String) -> String {
         resultNumber = input
         unit = "L"
     default:
-        return "지원하지 않는 범위입니다."
+        return nil
     }
-        resultNumber = (resultNumber * 1000).rounded() / 1000
-    return String(resultNumber) + unit
+    return (resultNumber, unit)
 }
 
 
 // 변환기
 func convertUnit(_ input: String) -> String {
-    
     guard let formatedInfo = formatter(input) else {
         return "올바른 형식이 아닙니다."
     }
-    var result = ""
+    var result: (output: Double, unit: String) = (0, "")
     
     // 길이 단위로 확인하면 길이로만 변환 가능하도록 작성
     if let number = toInch(formatedInfo.number, from: formatedInfo.from) {
-        result = fromInch(number, to: formatedInfo.to)
+        if let output = fromInch(number, to: formatedInfo.to) {
+            result = output
+        }
     } else if let number = toGram(formatedInfo.number, from: formatedInfo.from) {
-        result = fromGram(number, to: formatedInfo.to)
+        if let output = fromGram(number, to: formatedInfo.to) {
+            result = output
+        }
     } else if let number = toLiter(formatedInfo.number, from: formatedInfo.from) {
-        result = fromLiter(number, to: formatedInfo.to)
+        if let output = fromLiter(number, to: formatedInfo.to) {
+            result = output
+        }
     } else {
         return "지원하지 않는 범위입니다."
     }
-    return result
+    
+    // 소수점 넷째자리 반올림
+    result.output = (result.output * 1000).rounded() / 1000
+    
+    return String(result.output) + result.unit
 }
 
 // 유저 컨트롤
