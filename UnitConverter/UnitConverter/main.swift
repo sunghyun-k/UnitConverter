@@ -21,7 +21,7 @@ func formatter(_ input: String) -> (number: Double, from: String, to: String)? {
     guard let number = Double(input.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789.").inverted)) else {
         return nil
     }
-    print("number: \(number), from: \(from), to: \(to)")
+//    print("number: \(number), from: \(from), to: \(to)")
     return (number, from, to)
 }
 
