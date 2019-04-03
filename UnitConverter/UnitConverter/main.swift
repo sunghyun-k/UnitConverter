@@ -172,7 +172,7 @@ func convertUnit(_ input: String) -> String {
     }
     var result = ""
     
-    // 길이로 확인하면 길이로만 변환 가능하도록 작성
+    // 길이 단위로 확인하면 길이로만 변환 가능하도록 작성
     if let number = toInch(formatedInfo.number, from: formatedInfo.from) {
         result = fromInch(number, to: formatedInfo.to)
     } else if let number = toGram(formatedInfo.number, from: formatedInfo.from) {
