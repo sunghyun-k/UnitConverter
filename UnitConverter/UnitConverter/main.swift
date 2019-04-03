@@ -30,9 +30,15 @@ func formatter(_ input: String) -> (number: Double, from: String, to: String)? {
 let meterToInchMultiplier = 39.37
 let inchToCentimeterMuliplier = 2.54
 let yardToInchMultiplier: Double = 36
+
 let kilogramToGramMultiplier: Double = 1000
 let poundToGramMultiplier = 453.592
 let ounceToGramMultiplier = 28.35
+
+let literToPintMultiplier = 2.113
+let literToQuartMultiplier = 1.057
+let gallonToLiterMultiplier = 3.785
+
 
 // to inch 변환 함수
 func toInch(_ input: Double, from inputUnit: String) -> Double? {
@@ -63,6 +69,24 @@ func toGram(_ input: Double, from inputUnit: String) -> Double? {
     case "oz":
         result = input * ounceToGramMultiplier
     case "g":
+        result = input
+    default:
+        return nil
+    }
+    return result
+}
+
+// to liter 변환 함수
+func toLiter(_ input: Double, from inputUnit: String) -> Double? {
+    var result = Double()
+    switch inputUnit {
+    case "pt":
+        result = input / literToPintMultiplier
+    case "qt":
+        result = input / literToQuartMultiplier
+    case "gal":
+        result = input * gallonToLiterMultiplier
+    case "L":
         result = input
     default:
         return nil
@@ -116,7 +140,28 @@ func fromGram(_ input: Double, to outputUnit: String) -> String {
     return String(resultNumber) + unit
 }
 
-
+// from liter 변환 함수
+func fromLiter(_ input: Double, to outputUnit: String) -> String {
+    var resultNumber = Double()
+    var unit = String()
+    switch outputUnit {
+    case "pt":
+        resultNumber = input * literToPintMultiplier
+        unit = "pt"
+    case "qt":
+        resultNumber = input * literToQuartMultiplier
+        unit = "qt"
+    case "gal":
+        resultNumber = input / gallonToLiterMultiplier
+        unit = "gal"
+    case "L", "":
+        resultNumber = input
+        unit = "L"
+    default:
+        return "지원하지 않는 범위입니다."
+    }
+    return String(resultNumber) + unit
+}
 
 
 // 변환기
@@ -127,10 +172,13 @@ func convertUnit(_ input: String) -> String {
     }
     var result = ""
     
+    // 길이로 확인하면 길이로만 변환 가능하도록 작성
     if let number = toInch(formatedInfo.number, from: formatedInfo.from) {
         result = fromInch(number, to: formatedInfo.to)
     } else if let number = toGram(formatedInfo.number, from: formatedInfo.from) {
         result = fromGram(number, to: formatedInfo.to)
+    } else if let number = toLiter(formatedInfo.number, from: formatedInfo.from) {
+        result = fromLiter(number, to: formatedInfo.to)
     } else {
         return "지원하지 않는 범위입니다."
     }
